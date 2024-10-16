@@ -10,6 +10,7 @@ pub mod r#for;
 pub mod test;
 pub mod function_def;
 pub mod r#while;
+pub mod r#until;
 pub mod r#if;
 
 use crate::{ShellCore, Feeder, Script};
@@ -20,6 +21,7 @@ use self::paren::ParenCommand;
 use self::brace::BraceCommand;
 use self::function_def::FunctionDefinition;
 use self::r#while::WhileCommand;
+use self::r#until::UntilCommand;
 use self::r#for::ForCommand;
 use self::r#if::IfCommand;
 use self::test::TestCommand;
@@ -140,6 +142,7 @@ pub fn parse(feeder: &mut Feeder, core: &mut ShellCore) -> Option<Box<dyn Comman
     else if let Some(a) = BraceCommand::parse(feeder, core) { Some(Box::new(a)) }
     else if let Some(a) = ForCommand::parse(feeder, core) { Some(Box::new(a)) }
     else if let Some(a) = WhileCommand::parse(feeder, core) { Some(Box::new(a)) }
+    else if let Some(a) = UntilCommand::parse(feeder, core) { Some(Box::new(a)) }
     else if let Some(a) = CaseCommand::parse(feeder, core) { Some(Box::new(a)) }
     else if let Some(a) = TestCommand::parse(feeder, core) { Some(Box::new(a)) }
     else{ None }

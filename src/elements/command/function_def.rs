@@ -4,12 +4,12 @@
 use crate::{error_message, ShellCore, Feeder};
 use super::{Command, Pipe, Redirect};
 use crate::elements::command;
-use crate::elements::command::{BraceCommand, IfCommand, ParenCommand, WhileCommand};
+use crate::elements::command::{BraceCommand, IfCommand, ParenCommand, WhileCommand, UntilCommand};
 use nix::unistd::Pid;
 
 fn reserved(w: &str) -> bool {
     match w {
-        "{" | "}" | "while" | "do" | "done" | "if" | "then" | "elif" | "else" | "fi" => true,
+        "{" | "}" | "while" | "until" | "do" | "done" | "if" | "then" | "elif" | "else" | "fi" => true,
         _ => false,
     }
 }
@@ -91,6 +91,7 @@ impl FunctionDefinition {
         else if let Some(a) = ParenCommand::parse(feeder, core, false) { Some(Box::new(a)) }
         else if let Some(a) = BraceCommand::parse(feeder, core) { Some(Box::new(a)) }
         else if let Some(a) = WhileCommand::parse(feeder, core) { Some(Box::new(a)) }
+        else if let Some(a) = UntilCommand::parse(feeder, core) { Some(Box::new(a)) }
         else {None};
 
         if let Some(c) = &ans.command {
